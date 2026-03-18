@@ -4,7 +4,7 @@ import shutil
 from .systems import markdown_to_html_node
 
 STATIC_DIR = "static"
-PUBLIC_DIR = "public"
+BUILD_PATH = "docs"
 
 def _del_recursive(path: str, del_root_dir = True):
     for item in os.listdir(path):
@@ -30,7 +30,7 @@ def _cpy_recursive(from_path: str, to_path: str):
 
 def build_public():
     from_path = STATIC_DIR
-    to_path = PUBLIC_DIR
+    to_path = BUILD_PATH
     if not os.path.exists(from_path):
         raise NotADirectoryError(f"could not find a directory at {from_path}: should be {STATIC_DIR}")
     public_dir_exists = os.path.exists(to_path) and os.path.isdir(to_path)
