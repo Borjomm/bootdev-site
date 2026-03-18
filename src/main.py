@@ -1,8 +1,15 @@
-from nodes import TextNode, TextType
+from .builder import build_public, generate_pages_recursive
+import os
+
+MD_PATH = "content"
+HTML_TEMPLATE_PATH = "template.html"
+BUILD_PATH = "public"
+
 
 def main():
-    node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print(node)
+    build_public()
+    generate_pages_recursive(MD_PATH, HTML_TEMPLATE_PATH, BUILD_PATH)
+
 
 if __name__ == "__main__":
     main()

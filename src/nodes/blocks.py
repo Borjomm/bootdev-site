@@ -28,8 +28,6 @@ def _is_quote(block: str) -> BlockType | None:
     for line in lines:
         if not line.startswith(">"):
             return None
-        if not line[1:].strip():
-            return None
     return BlockType.QUOTE
 
 def _is_unordered_list(block: str) -> BlockType | None:

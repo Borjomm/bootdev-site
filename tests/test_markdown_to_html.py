@@ -34,3 +34,39 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_quotes_and_headings(self):
+        md = """
+# One
+
+### Three
+
+> This is a long
+> quote block
+
+###### Six
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h1>One</h1><h3>Three</h3><blockquote><p>This is a long quote block</p></blockquote><h6>Six</h6></div>"
+        )
+
+    def test_unordered_and_ordered_lists(self):
+        md = """
+- This is an unordered list
+- Advertisement
+
+1. This is an ordered list
+2. Second
+3. Third with a [link](https://google.com)
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            '<div><ul><li>This is an unordered list</li><li>Advertisement</li></ul><ol><li>This is an ordered list</li><li>Second</li><li>Third with a <a href="https://google.com">link</a></li></ol></div>'
+        )

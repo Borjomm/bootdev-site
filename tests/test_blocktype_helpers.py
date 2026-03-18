@@ -64,10 +64,7 @@ class TestBlockTypeQuote(unittest.TestCase):
         self.assertEqual(_is_quote("> Text\nMore"), None)
 
     def test_is_quote_empty_after_marker(self):
-        self.assertEqual(_is_quote("> "), None)
-
-    def test_is_quote_empty_line(self):
-        self.assertEqual(_is_quote(">\n"), None)
+        self.assertEqual(_is_quote("> "), BlockType.QUOTE)
 
 class TestBlockTypeCode(unittest.TestCase):
     def test_is_code_valid(self):

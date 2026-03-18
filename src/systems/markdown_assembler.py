@@ -20,14 +20,26 @@ def _make_code_node(block: str) -> HTMLNode:
     return ParentNode(tag="pre", children=[text_node_to_html_node(node)])
 
 def _make_quote_node(block: str) -> HTMLNode:
-    html_nodes = []
-    lines = block.split('\n')
-    for i, line in enumerate(lines):
-        start = 2 if line[1] == " " else 1
-        html_nodes.extend(_text_to_children(line[start:]))
-        if i != len(lines) - 1:
-            html_nodes.append(LeafNode(tag=None, value='\n'))
-    return ParentNode(tag="blockquote", children=[ParentNode(tag='p', children=html_nodes)])
+    children = []
+    built = []
+
+    for line in block.split("\n"):
+        text = line[1:].strip()
+        if text:
+            built.append(text)
+        elif built:
+            children.append(ParentNode(tag="p", children=_text_to_children(" ".join(built))))
+            built = []
+
+    if built:
+        children.append(ParentNode(tag="p", children=_text_to_children(" ".join(built))))
+
+    return ParentNode(tag="blockquote", children=children)
+
+def _make_quote_node_old(block: str) -> HTMLNode:
+    lines = " ".join(line[2 if line.startswith("> ") else 1:] for line in block.split('\n'))
+    
+    return ParentNode(tag="blockquote", children=_text_to_children(lines))
 
 def _make_unordered_list(block: str) -> HTMLNode:
     entries = []
@@ -64,7 +76,8 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
             case BlockType.CODE:
                 node = _make_code_node(block)
             case BlockType.QUOTE:
-                node = _make_quote_node(block)
+                #node = _make_quote_node(block)
+                node = _make_quote_node_old(block)
             case BlockType.UNORDERED_LIST:
                 node = _make_unordered_list(block)
             case BlockType.ORDERED_LIST:
